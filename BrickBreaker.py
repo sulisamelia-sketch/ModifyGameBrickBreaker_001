@@ -109,3 +109,23 @@ class Brick(GameObject):
             self.canvas.itemconfig(self.item, fill=Brick.COLORS[self.hits])
 
 
+class PowerUp(GameObject):
+    """Item Bonus Unik yang Jatuh"""
+    def __init__(self, canvas, x, y, kind):
+        self.kind = kind
+        colors = {"multi": "#FFD54F", "life": "#81C784", "laser": "#FF4081"}
+        item = canvas.create_oval(x - 9, y - 9, x + 9, y + 9, fill=colors[kind], outline="white", width=2)
+        super().__init__(canvas, item)
+
+    def update(self):
+        self.move(0, 3.5)
+
+class Laser(GameObject):
+    """Peluru Laser yang ditembakkan Paddle"""
+    def __init__(self, canvas, x, y):
+        item = canvas.create_rectangle(x - 2, y - 10, x + 2, y, fill="#FF4081", outline="")
+        super().__init__(canvas, item)
+
+    def update(self):
+        self.move(0, -7)
+
