@@ -80,3 +80,32 @@ class Paddle(GameObject):
         coords = self.get_position()
         if (coords[2] - coords[0]) < 170:
             self.canvas.coords(self.item, coords[0] - 15, coords[1], coords[2] + 15, coords[3])
+
+class Brick(GameObject):
+    """Child Class Balok Multi-Hit dengan Nuansa Petualangan"""
+    COLORS = {1: "#80DEEA", 2: "#F48FB1", 3: "#CE93D8"}
+
+    def __init__(self, canvas, x, y, hits, callback):
+        self.width = 75
+        self.height = 24
+        self.hits = hits
+        self.max_hits = hits
+        self.callback = callback
+        item = canvas.create_rectangle(
+            x - self.width / 2, y - self.height / 2,
+            x + self.width / 2, y + self.height / 2,
+            fill=Brick.COLORS[hits], outline="#0D1B2A", width=1, tags="brick"
+        )
+        super().__init__(canvas, item)
+
+    def hit(self):
+        self.hits -= 1
+        if self.hits <= 0:
+            coords = self.get_position()
+            self.delete()
+            if self.callback:
+                self.callback(self.max_hits * 10, (coords[0] + coords[2]) / 2, coords[3])
+        else:
+            self.canvas.itemconfig(self.item, fill=Brick.COLORS[self.hits])
+
+
